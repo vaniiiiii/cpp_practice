@@ -1,0 +1,67 @@
+import java.util.Scanner;
+class Main {
+    int color[];
+    boolean isSafe(int v, int graph[][], int color[],
+                   int c,int V)
+    {
+        for (int i = 0; i < V; i++)
+            if (graph[v][i] == 1 && c == color[i])
+                return false;
+        return true;
+    }
+
+    boolean graphColoringUtil(int graph[][], int m,
+                              int color[], int v,int V)
+    {
+        if (v == V)
+            return true;
+
+        for (int c = 1; c <= m; c++)
+        {
+            if (isSafe(v, graph, color, c, V))
+            {
+                color[v] = c;
+
+                if (graphColoringUtil(graph, m,
+                                      color, v + 1,V))
+                    return true;
+
+                color[v] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    boolean graphColoring(int graph[][], int m,int V)
+    {
+        color = new int[V];
+        for (int i = 0; i < V; i++)
+            color[i] = 0;
+        if (!graphColoringUtil(graph, m, color, 0,V))
+        {
+            System.out.println("-1");
+            return false;
+        }
+        printSolution(color,V);
+        return true;
+    }
+    void printSolution(int color[],int V)
+    {
+        for (int i = 0; i < V; i++)
+            System.out.print(color[i] + " ");
+        System.out.println();
+    }
+    public static void main(String args[])
+    {  int i,j,k=0;
+    Scanner sc=new Scanner(System.in);
+        Main Coloring = new Main();
+        int V=sc.nextInt();
+        int graph[][] =new int[V][V];
+        int m =sc.nextInt();
+        for(i=0;i<V;i++)
+        for(j=0;j<V;j++)
+        graph[i][j]=sc.nextInt();
+        Coloring.graphColoring(graph, m,V);
+    }
+}
